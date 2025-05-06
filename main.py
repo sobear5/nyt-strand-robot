@@ -70,7 +70,7 @@ with open("z_list.pkl", "rb") as f:
 
 
 async def main():
-
+    #print(a_list)
     #gets letters on nyt website
     browser = await launch(headless=True, args=['--no-sandbox'])
     page = await browser.newPage()
@@ -82,9 +82,54 @@ async def main():
                 .map(el => el.innerText);
 }''')
     await browser.close()
-
-
-
     print(div_texts)
+
+
+    start = 22
+    strand = [start]
+    next_indexes(start, strand)
+
+
+
+    
+
+def next_indexes(start, strand) :
+    #0-47
+    next = []
+    row = int(start/6)
+    col = start%6 
+    print(row) #prints row - 1
+    print(col) #prints column - 1
+   
+    if (col < 5): #if not in right most collumn add right index to next
+        next.append(start + 1) 
+    if (0 < col): #if not in left most collumn add left index to next
+        next.append(start - 1)
+    if (row < 7): #if not in bottom most row add bottom index
+        next.append(start + 6)
+        if (col < 5): #if not in bottom most row or right most column and bottom right index
+            next.append(start + 7)
+        if (0 < col): #if not in bottom most row or left most column and bottom left index
+            next.append(start + 5)
+    if (0 < row): #if not in top most row add top index
+        next.append(start - 6)
+        if (col < 5): #if not in top most row or right most column and top right index
+            next.append(start - 5)
+        if (0 < col): #if not in top most row or left most column and top left index
+            next.append(start - 7)
+
+    print(next)
+
+    #remove = []
+    #for x in range(strand.size()):
+    #    for y in range(next.size()):
+    #        if (start[x] == next[next.size() - 1 - y]): #for each in strand go through size and remove 
+    #            remove.append
+    #            next.remove(next)
+    
+        
+
+
+
 
 asyncio.run(main())
